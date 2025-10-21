@@ -137,16 +137,42 @@
                 plot.style.left = position.x + 'px';
                 plot.style.top = position.y + 'px';
 
-                // If the plot position has a 'pic' link, add a click event listener
+                // Set the cursor to pointer if a picture exists to indicate it's clickable
                 if (position.pic) {
-                    plot.style.cursor = 'pointer'; // Make it look clickable
-                    plot.addEventListener('click', () => {
+                    plot.style.cursor = 'pointer';
+                }
+
+                // Add a single click event listener to handle both regular clicks and shift-clicks
+                plot.addEventListener('click', (e) => {
+                    // Check if the Shift key was pressed during the click
+                    if (e.shiftKey) {
+                        e.preventDefault(); // Prevent any default browser behavior for shift-click
+                        const plotNumber = position.plotNumber;
+
+                        if (housingData[plotNumber]) {
+                            // Plot is occupied, so make it available
+                            delete housingData[plotNumber];
+                            plot.classList.remove('occupied');
+                            const tooltip = plot.querySelector('.plot-info');
+                            tooltip.textContent = `Plot ${plotNumber}: Available`;
+                        } else {
+                            // Plot is available, ask for a name and occupy it
+                            const ownerName = prompt(`Enter the name for Plot ${plotNumber}:`);
+                            if (ownerName && ownerName.trim() !== '') {
+                                housingData[plotNumber] = ownerName.trim();
+                                plot.classList.add('occupied');
+                                const tooltip = plot.querySelector('.plot-info');
+                                tooltip.textContent = `Plot ${plotNumber}: ${ownerName.trim()}`;
+                            }
+                        }
+                    } else if (position.pic) {
+                        // If it's a regular click and there's a picture, show the overlay
                         const overlay = document.getElementById('imageOverlay');
                         const overlayImage = document.getElementById('overlayImageContent');
                         overlayImage.src = position.pic;
                         overlay.style.display = 'flex'; // Show the overlay
-                    });
-                }
+                    }
+                });
                 
                 mapBackground.appendChild(plot);
             });
@@ -252,4 +278,5 @@
     <script src="grid-overlay.js"></script>
 </body>
 </html>
+
 
