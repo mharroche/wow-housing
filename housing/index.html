@@ -6,7 +6,17 @@
     <title>Guild Housing Map</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="grid-overlay.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&display=swap" rel="stylesheet">
     <style>
+        .map-title {
+            text-align: center;
+            font-size: 2.5rem;
+            color: #eee;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
+            font-family: 'Cinzel', serif;
+        }
+
         /* Styles for the image overlay */
         .overlay-container {
             position: fixed;
@@ -43,6 +53,7 @@
     </style>
 </head>
 <body>
+    <h1 class="map-title">Tabula Rasa</h1>
     <div class="map-container">
         <div class="map-background" id="mapBackground">
             <!-- House plots will be dynamically positioned here -->
